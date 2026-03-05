@@ -1,4 +1,5 @@
 #include <memory>
+#include <chrono>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -21,7 +22,7 @@ public:
         RCLCPP_INFO(this->get_logger(), "I heard joint_torque info: '%s'", msg->data.c_str());
       };
     joint_torque_subscription_ =
-      this->create_subscription<std_msgs::msg::String>("joint_torque", 10, joint_torque_subscription_);
+      this->create_subscription<std_msgs::msg::String>("joint_torque", 10, joint_torque_callback);
     
 
     // Publish joint position data
