@@ -7,7 +7,8 @@
 Based on this minimal publisher/subscriber tutorial:
 https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html
 */
-
+//TODO: Remove this namespace if neccessary
+using namespace std::chrono_literals;
 
 class Visualization : public rclcpp::Node
 {
@@ -16,12 +17,12 @@ public:
   : Node("visualization")
   {
     // Joint position data retrieval
-    auto joint_pos_callback =
+    auto joint_pos_callback_ =
       [this](std_msgs::msg::String::UniquePtr msg) -> void {
         RCLCPP_INFO(this->get_logger(), "I heard joint_pos info: '%s'", msg->data.c_str());
       };
     joint_pos_subscription_ =
-      this->create_subscription<std_msgs::msg::String>("joint_pos", 10, joint_torque_subscription_);
+      this->create_subscription<std_msgs::msg::String>("joint_pos", 10, joint_pos_callback_);
   }
 
 private:

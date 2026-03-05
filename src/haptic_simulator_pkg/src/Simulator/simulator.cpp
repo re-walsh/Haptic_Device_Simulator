@@ -1,5 +1,6 @@
-#include <memory>
 #include <chrono>
+#include <memory>
+#include <string>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -8,7 +9,8 @@
 Based on this minimal publisher/subscriber tutorial:
 https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html
 */
-
+//TODO: Remove this namespace if neccessary
+using namespace std::chrono_literals;
 
 class Simulator : public rclcpp::Node
 {
@@ -32,7 +34,7 @@ public:
         auto message = std_msgs::msg::String();
         message.data = "Fake joint_pos data from sim: " + std::to_string(this->count_++);
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-        this->joint_torque_publisher_->publish(message);
+        this->joint_pos_publisher_->publish(message);
       };
     
     // Timer to create test data

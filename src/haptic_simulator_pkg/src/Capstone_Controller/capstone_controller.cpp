@@ -1,5 +1,6 @@
 #include <memory>
 #include <chrono>
+#include <string>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -13,7 +14,8 @@ This is where Edwin + Kyle's capstone functionality can be implemented.
 NOTE: In this implementation, raw joint poisition and joint position are assumed to be the same topic, so
 the capstone controller only subscribes to the topic, and does not publish any joint position data.
 */
-
+//TODO: Remove this namespace if neccessary
+using namespace std::chrono_literals;
 
 class CapstoneController : public rclcpp::Node
 {
