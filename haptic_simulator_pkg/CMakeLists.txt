@@ -22,10 +22,10 @@ ament_target_dependencies(user_controller rclcpp std_msgs)
 add_executable(capstone_controller src/Capstone_Controller/capstone_controller.cpp)
 ament_target_dependencies(capstone_controller rclcpp std_msgs)
 
-# # Add Haptic Controller
-# set(HW_ENABLE OFF CACHE BOOL "" FORCE)
-# add_subdirectory(src/Captsone_Controller/hapticdevice/Code/HapticDevice)
-# link_libraries(capstone_controller PUBLIC HapticDevice)
+# add HapticDevice library
+set(HW_ENABLE OFF CACHE BOOL "" FORCE)
+add_subdirectory(src/Capstone_Controller/hapticdevice/Code/HapticDevice/)
+target_link_libraries(capstone_controller HapticDevice)
 
 # Simulator
 add_executable(simulator src/Simulator/simulator.cpp)
@@ -41,6 +41,11 @@ install(TARGETS
   simulator
   visualization
   DESTINATION lib/${PROJECT_NAME})
+
+# Install HapticDevice library
+install(TARGETS HapticDevice
+  LIBRARY DESTINATION lib/
+  RUNTIME DESTINATION lib/)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

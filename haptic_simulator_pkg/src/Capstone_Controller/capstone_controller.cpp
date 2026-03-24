@@ -4,6 +4,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "haptic_device.h"
 
 /*
 Based on this minimal publisher/subscriber tutorial:
@@ -16,6 +17,42 @@ the capstone controller only subscribes to the topic, and does not publish any j
 */
 //TODO: Remove this namespace if neccessary
 using namespace std::chrono_literals;
+using namespace HapticDevice;
+
+class ExampleUserController : public ControllerInterface<JointTauVector> {
+
+public:
+
+  JointTauVector torques;
+  int direction = 1;
+
+	ExampleUserController() {
+    torques.data = Eigen::MatrixXd::Zero(6, 1);
+  }
+
+	HapticDevice::ErrorCode start() override {
+    ErrorCode error = ControllerInterface<JointTauVector>::start();
+	  if (error != ErrorCode::Success) return error;
+
+    // custom user stuff
+
+    return ErrorCode::Success;
+  };
+
+	HapticDevice::JointTauVector get_target_state() override {
+    if(this->get_robot_state().JointTorques.data(0) >= this->limits.config["joints"][0]["torque_max"].as<double>(10.0))
+    {
+      direction = -1 * direction;
+    }
+    if(this->get_robot_state().JointTorques.data(0) <= this->limits.config["joints"][0]["torque_min"].as<double>(10.0))
+    {
+      direction = -1 * direction;
+    }
+    
+    this->torques.data(0) += direction;
+    return torques;
+  };
+};
 
 class CapstoneController : public rclcpp::Node
 {
@@ -44,16 +81,24 @@ public:
     auto timer_callback =
       [this]() -> void {
         auto message = std_msgs::msg::String();
-        message.data = "Fake joint_torque data from capstone: " + std::to_string(this->count_++);
+        message.data = "Fake joint_torque data from capstone: " + std::to_string(this->controller.get_robot_state().JointTorques.data(0));
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
         this->joint_torque_publisher_->publish(message);
       };
     
     // Timer to create test data
     timer_ = this->create_wall_timer(500ms, timer_callback);
+
+    // start controller
+    this->controller.start();
+    this->controller.task_debug_hud.stop();
+    this->controller.run_task.set
   }
 
 private:
+  // User developed controller
+  ExampleUserController controller;
+
   // Topic interaction TODO: Change the message types as appropriate
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr setpoint_subscription_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr joint_pos_subscription_;
