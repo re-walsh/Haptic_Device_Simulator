@@ -12,15 +12,18 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 # Add Node executables
 # User Controller
 add_executable(user_controller src/User_Controller/user_controller.cpp)
-ament_target_dependencies(user_controller rclcpp std_msgs)
+ament_target_dependencies(user_controller rclcpp std_msgs Eigen3)
+target_include_directories(user_controller PRIVATE include)
 
 # Capstone Controller
-add_executable(capstone_controller src/Capstone_Controller/capstone_controller.cpp)
+add_executable(capstone_controller src/Capstone_Controller/controller_manager.cpp)
 ament_target_dependencies(capstone_controller rclcpp std_msgs)
+target_include_directories(capstone_controller PRIVATE include)
 
 # add HapticDevice library
 set(HW_ENABLE OFF CACHE BOOL "" FORCE)
