@@ -5,6 +5,7 @@ project(hapticdevice_URDF)
 find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY config launch meshes urdf
+  visualization
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -13,7 +14,7 @@ set(PACKAGE_DATA_FILES
 )
 
 install(FILES ${PACKAGE_DATA_FILES}
-  DESTINATION share/${PROJECT_NAME}
+	DESTINATION share/${PROJECT_NAME}
 )
 
 install(PROGRAMS
