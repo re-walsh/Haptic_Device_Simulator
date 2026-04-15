@@ -226,6 +226,37 @@ echo $XDG_RUNTIME_DIR
 
 If those are blank, WSLg is not active in that shell.
 
+## Visualization Setup
+
+### Package Required
+
+source /opt/ros/humble/setup.bash
+sudo apt update
+sudo apt install ros-humble-joint-state-publisher-gui
+
+### Build
+
+Build the project as previously described: 
+
+cd /mnt/c/Users/kylej/source/repos/Haptic_Device_Simulator
+source /opt/ros/humble/setup.bash
+rm -rf build install log
+colcon build --packages-select hapticdevice_URDF
+source install/setup.bash
+
+### Launch
+
+#### Without Gazebo Running
+
+source install/setup.bash
+ros2 launch hapticdevice_URDF vis_launch.py
+
+#### With Gazebo Running
+
+source install/setup.bash
+ros2 launch hapticdevice_URDF vis_launch.py manual:=false
+
+
 ## Notes
 
 - The package name `hapticdevice_URDF` does not follow normal ROS 2 lowercase naming conventions, so builds and launches show a warning.
