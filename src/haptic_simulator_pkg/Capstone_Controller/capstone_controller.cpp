@@ -19,7 +19,7 @@ the capstone controller only subscribes to the topic, and does not publish any j
 using namespace std::chrono_literals;
 using namespace HapticDevice;
 
-class ExampleUserController : public ControllerInterface<JointTauVector> {
+class ExampleUserController : public Controller<JointTauVector> {
 
 public:
 
@@ -31,7 +31,7 @@ public:
   }
 
 	HapticDevice::ErrorCode start() override {
-    ErrorCode error = ControllerInterface<JointTauVector>::start();
+    ErrorCode error = Controller<JointTauVector>::start();
 	  if (error != ErrorCode::Success) return error;
 
     // custom user stuff
