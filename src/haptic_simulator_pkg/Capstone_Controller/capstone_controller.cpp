@@ -92,7 +92,7 @@ public:
     // start controller
     this->controller.start();
     this->controller.task_debug_hud.stop();
-    this->controller.run_task.set
+   // this->controller.run_task.set
   }
 
 private:

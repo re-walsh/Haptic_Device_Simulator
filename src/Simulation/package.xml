@@ -1,5 +1,5 @@
 <package format="3">
-  <name>hapticdevice_URDF</name>
+  <name>haptic_sim</name>
   <version>1.0.0</version>
   <description>
     <p>URDF Description package for hapticdevice_URDF</p>
