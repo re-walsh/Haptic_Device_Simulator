@@ -25,7 +25,7 @@ public:
   UserController()
   : Node("user_controller"), count_(0)
   {
-    setpoint_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("/arm_position_controller/commands", 10);
+    setpoint_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("setpoint", 10);
     auto timer_callback =
       [this]() -> void {
         // Get joint positon data from the user 
