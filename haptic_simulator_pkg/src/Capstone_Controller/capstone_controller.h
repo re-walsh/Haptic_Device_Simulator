@@ -1,6 +1,7 @@
 #include <memory>
 #include <chrono>
 #include <string>
+#include <sstream>
 
 #include "rclcpp/rclcpp.hpp"
 #include <std_msgs/msg/float64_multi_array.hpp>
@@ -8,11 +9,12 @@
 #include "haptic_device.h"
 
 using namespace HapticDevice;
+using namespace std::chrono_literals;
 
 template<typename T>
-class ROSControllerBase : public Controller<T>, public rclcpp::Node {
+class CapstoneControllerBase : public Controller<T>, public rclcpp::Node {
     public:
-    ROSControllerBase() : rclcpp::Node("capstone_controller") {
+    CapstoneControllerBase(const std::string& name = "controller") : rclcpp::Node(name) {
         // Setpoint data retrieval
         auto setpoint_callback =
         [this](std_msgs::msg::Float64MultiArray::UniquePtr msg) -> void {
@@ -21,22 +23,16 @@ class ROSControllerBase : public Controller<T>, public rclcpp::Node {
             if (error != ErrorCode::Success){
                 RCLCPP_ERROR(this->get_logger(), "Error setting target state. Likely the incorrect vector size.");
             }
-            // RCLCPP_INFO(this->get_logger(), "I heard setpoint info: '%s'", msg->data.c_str());
+            std::stringstream ss;
+            ss << "Setpoint: " << vec.transpose();
+            std::string str = ss.str();
+            RCLCPP_INFO(this->get_logger(), str.c_str());
         };
         this->setpoint_subscription_ = this->create_subscription<std_msgs::msg::Float64MultiArray>("setpoint", 10, setpoint_callback);
         
         // TODO: maybe incorporate into run() from HapticDevice::Controller<T>
-        // // Publish joint torque data
+        // Publish joint torque data
         // joint_torque_publisher_ = this->create_publisher<std_msgs::msg::String>("joint_torque", 10);
-        // auto timer_callback =
-        // [this]() -> void {
-        //     auto message = std_msgs::msg::Float64MultiArray();
-        //     message.data = "Fake joint_torque data from capstone: " + std::to_string(this->controller->get_robot_state().JointTorques.data(0));
-        //     RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-        //     this->joint_torque_publisher_->publish(message);
-        // };
-        // // Timer to create test data
-        // timer_ = this->create_wall_timer(500ms, timer_callback);
 
 
         // TODO: maybe override update_robot_state() ?
@@ -54,9 +50,7 @@ class ROSControllerBase : public Controller<T>, public rclcpp::Node {
     
     rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr setpoint_subscription_;
     // rclcpp::Publisher<std_msgs::msg::String>::SharedPtr joint_torque_publisher_;
-    // Timer
-    rclcpp::TimerBase::SharedPtr timer_;
-    size_t count_;
+ 
     
     ErrorCode set_target_state(Eigen::VectorXd setpoint) {
         if(this->_target_state.data.size() == setpoint.size()){
@@ -72,7 +66,7 @@ class ROSControllerBase : public Controller<T>, public rclcpp::Node {
 };
 
 // define specific class types
-template class ROSControllerBase<HapticDevice::JointTauVector>;
-template class ROSControllerBase<HapticDevice::JointQPositionVector>;
-template class ROSControllerBase<HapticDevice::Wrench>;
-template class ROSControllerBase<HapticDevice::CartesianPose>;
+template class CapstoneControllerBase<HapticDevice::JointTauVector>;
+template class CapstoneControllerBase<HapticDevice::JointQPositionVector>;
+template class CapstoneControllerBase<HapticDevice::Wrench>;
+template class CapstoneControllerBase<HapticDevice::CartesianPose>;

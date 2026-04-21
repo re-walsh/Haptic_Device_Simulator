@@ -28,17 +28,18 @@ public:
     auto timer_callback =
       [this]() -> void {
         auto message = std_msgs::msg::Float64MultiArray();
-        Eigen::VectorXd vec = Eigen::VectorXd::Zero(6,1);
+        Eigen::VectorXd vec = Eigen::VectorXd::Zero(7,1);
         message.data.assign(vec.data(), vec.data() + vec.size());
         // RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
         this->setpoint_publisher_->publish(message);
 
         auto type = std_msgs::msg::Int32();
-        type.data = ControllerTypes::JointTorques;
+        type.data = type.data != ControllerTypes::CartesianPose ? ControllerTypes::Wrench : ControllerTypes::CartesianPose;
+        RCLCPP_INFO(this->get_logger(), "Publishing controller type: '%d'", type.data);
         this->controller_type_publisher_->publish(type);
       };
     // Timer to create test data
-    timer_ = this->create_wall_timer(500ms, timer_callback);
+    timer_ = this->create_wall_timer(5000ms, timer_callback);
   }
 
 private:
