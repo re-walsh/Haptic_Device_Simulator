@@ -40,7 +40,7 @@ From a WSL terminal:
 cd "/mnt/c/Users/sloan/OneDrive - UBC/UBC/Year 4.0/MECH 464/Project"
 source /opt/ros/humble/setup.bash
 rm -rf build install log
-colcon build --packages-select hapticdevice_URDF
+colcon build
 source install/setup.bash
 ```
 
@@ -54,7 +54,7 @@ This is the most reliable option in WSL:
 cd "/mnt/c/Users/sloan/OneDrive - UBC/UBC/Year 4.0/MECH 464/Project"
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 launch hapticdevice_URDF gazebo_ros2_control.launch.py
+ros2 launch haptic_sim gazebo_ros2_control.launch.py
 ```
 
 ### With GUI
@@ -63,7 +63,7 @@ ros2 launch hapticdevice_URDF gazebo_ros2_control.launch.py
 cd "/mnt/c/Users/sloan/OneDrive - UBC/UBC/Year 4.0/MECH 464/Project"
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 launch hapticdevice_URDF gazebo_ros2_control.launch.py headless:=false
+ros2 launch haptic_sim gazebo_ros2_control.launch.py headless:=false
 ```
 
 ## Validate That The Launch Worked
@@ -74,7 +74,7 @@ Open a second WSL terminal:
 cd "/mnt/c/Users/sloan/OneDrive - UBC/UBC/Year 4.0/MECH 464/Project"
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-python3 install/hapticdevice_URDF/lib/hapticdevice_URDF/validate_launch.py --timeout 20
+python3 install/haptic_sim/lib/haptic_sim/validate_launch.py --timeout 20
 ```
 
 Expected result:
@@ -144,7 +144,7 @@ Run:
 cd "/mnt/c/Users/sloan/OneDrive - UBC/UBC/Year 4.0/MECH 464/Project"
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-python3 install/hapticdevice_URDF/lib/hapticdevice_URDF/validate_command.py --timeout 20
+python3 install/haptic_sim/lib/haptic_sim/validate_command.py --timeout 20
 ```
 
 Expected result:
@@ -161,7 +161,7 @@ Terminal 1:
 cd "/mnt/c/Users/sloan/OneDrive - UBC/UBC/Year 4.0/MECH 464/Project"
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 launch hapticdevice_URDF gazebo_ros2_control.launch.py headless:=false
+ros2 launch haptic_sim gazebo_ros2_control.launch.py headless:=false
 ```
 
 Terminal 2:
@@ -170,7 +170,7 @@ Terminal 2:
 cd "/mnt/c/Users/sloan/OneDrive - UBC/UBC/Year 4.0/MECH 464/Project"
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-python3 install/hapticdevice_URDF/lib/hapticdevice_URDF/validate_launch.py --timeout 20
+python3 install/haptic_sim/lib/haptic_sim/validate_launch.py --timeout 20
 ros2 topic pub /arm_position_controller/commands std_msgs/msg/Float64MultiArray "{data: [0.3, 0.2, 0.04, 0.1, -0.2, 0.1]}" --once
 ```
 
@@ -184,7 +184,7 @@ Kill all old sessions:
 
 ```bash
 pkill -9 -f 'ign gazebo' || true
-pkill -9 -f 'ros2 launch hapticdevice_URDF gazebo_ros2_control.launch.py' || true
+pkill -9 -f 'ros2 launch haptic_sim gazebo_ros2_control.launch.py' || true
 pkill -9 -f robot_state_publisher || true
 pkill -9 -f bringup_controllers.py || true
 pkill -9 -f 'controller_manager/spawner' || true
@@ -193,7 +193,7 @@ pkill -9 -f 'controller_manager/spawner' || true
 Then launch only one new GUI session:
 
 ```bash
-ros2 launch hapticdevice_URDF gazebo_ros2_control.launch.py headless:=false
+ros2 launch haptic_sim gazebo_ros2_control.launch.py headless:=false
 ```
 
 ### `ros2 control list_controllers` crashes with `!rclpy.ok()`
@@ -201,7 +201,7 @@ ros2 launch hapticdevice_URDF gazebo_ros2_control.launch.py headless:=false
 This CLI can be flaky in WSL. Use the provided validator instead:
 
 ```bash
-python3 install/hapticdevice_URDF/lib/hapticdevice_URDF/validate_launch.py --timeout 20
+python3 install/haptic_sim/lib/haptic_sim/validate_launch.py --timeout 20
 ```
 
 ### `Waiting for at least 1 matching subscription(s)...`
@@ -209,7 +209,7 @@ python3 install/hapticdevice_URDF/lib/hapticdevice_URDF/validate_launch.py --tim
 The arm controller is not ready yet. Run the launch validator first:
 
 ```bash
-python3 install/hapticdevice_URDF/lib/hapticdevice_URDF/validate_launch.py --timeout 20
+python3 install/haptic_sim/lib/haptic_sim/validate_launch.py --timeout 20
 ```
 
 Only publish commands after it passes.
@@ -241,7 +241,7 @@ Build the project as previously described:
 cd /mnt/c/Users/kylej/source/repos/Haptic_Device_Simulator
 source /opt/ros/humble/setup.bash
 rm -rf build install log
-colcon build --packages-select hapticdevice_URDF
+colcon build 
 source install/setup.bash
 
 ### Launch
@@ -249,16 +249,14 @@ source install/setup.bash
 #### Without Gazebo Running
 
 source install/setup.bash
-ros2 launch hapticdevice_URDF vis_launch.py
+ros2 launch haptic_sim vis_launch.py
 
 #### With Gazebo Running
 
 source install/setup.bash
-ros2 launch hapticdevice_URDF vis_launch.py manual:=false
+ros2 launch haptic_sim vis_launch.py manual:=false
 
 
 ## Notes
-
-- The package name `hapticdevice_URDF` does not follow normal ROS 2 lowercase naming conventions, so builds and launches show a warning.
 - The project is currently set up around WSL + ROS 2 Humble + Gazebo Sim.
 - The arm is configured as a fixed-base robot.
