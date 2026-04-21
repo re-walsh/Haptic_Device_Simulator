@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(haptic_sim_pkg)
+project(haptic_comp)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -31,15 +31,12 @@ target_link_libraries(capstone_controller HapticDevice)
 add_executable(simulator Simulator/simulator.cpp)
 ament_target_dependencies(simulator rclcpp std_msgs)
 
-# Visualization
-add_executable(visualization Visualization/visualization.cpp)
-ament_target_dependencies(visualization rclcpp std_msgs)
+
 
 install(TARGETS
   user_controller
   capstone_controller
   simulator
-  visualization
   DESTINATION lib/${PROJECT_NAME})
 
 # Install HapticDevice library
