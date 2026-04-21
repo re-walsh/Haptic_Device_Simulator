@@ -66,8 +66,8 @@ public:
       [this](std_msgs::msg::Float64MultiArray::UniquePtr msg) -> void {
         this->setpoints = msg->data;
         if(!(this->setpoints.empty())){
-          RCLCPP_INFO(this->get_logger(), "Processing setpoint data");// %f, %f, %f, %f, %f, %f", 
-          //this->setpoints.at(0), this->setpoints.at(1), this->setpoints.at(2), this->setpoints.at(3), this->setpoints.at(4), this->setpoints.at(5));
+          RCLCPP_INFO(this->get_logger(), "Processing setpoint data: %f, %f, %f, %f, %f, %f", 
+          this->setpoints.at(0), this->setpoints.at(1), this->setpoints.at(2), this->setpoints.at(3), this->setpoints.at(4), this->setpoints.at(5));
         }
       };
     setpoint_subscription_ =
@@ -76,7 +76,8 @@ public:
     // Joint position data retrieval
     auto joint_pos_callback =
       [this](std_msgs::msg::Float64MultiArray::UniquePtr msg) -> void {
-        RCLCPP_INFO(this->get_logger(), "I heard joint_pos info");// %f, %f, %f, %f, %f, %f", msg->data.at(0),msg->data.at(1),msg->data.at(2),msg->data.at(3),msg->data.at(4),msg->data.at(5));
+        RCLCPP_INFO(this->get_logger(), "I heard joint_pos info: %f, %f, %f, %f, %f, %f", msg->data.at(0),msg->data.at(1),msg->data.at(2),msg->data.at(3),msg->data.at(4),msg->data.at(5));
+        this->positions = msg->data;
       };
     joint_pos_subscription_ =
       this->create_subscription<std_msgs::msg::Float64MultiArray>("joint_pos", 10, joint_pos_callback);
@@ -109,7 +110,10 @@ public:
 private:
   // User developed controller
   ExampleUserController controller;
+  // User specificed joint angles
   std::vector<double> setpoints;
+  // Actual joint positions from the simulator
+  std::vector<double> positions;
 
   // Topic interaction TODO: Change the message types as appropriate
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr setpoint_subscription_;
