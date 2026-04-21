@@ -4,6 +4,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "std_msgs/msg/float64_multi_array.hpp"
 #include "haptic_device.h"
 
 /*
@@ -62,28 +63,38 @@ public:
   {
     // Setpoint data retrieval
     auto setpoint_callback =
-      [this](std_msgs::msg::String::UniquePtr msg) -> void {
-        RCLCPP_INFO(this->get_logger(), "I heard setpoint info: '%s'", msg->data.c_str());
+      [this](std_msgs::msg::Float64MultiArray::UniquePtr msg) -> void {
+        this->setpoints = msg->data;
+        if(!(this->setpoints.empty())){
+          RCLCPP_INFO(this->get_logger(), "Processing setpoint data");// %f, %f, %f, %f, %f, %f", 
+          //this->setpoints.at(0), this->setpoints.at(1), this->setpoints.at(2), this->setpoints.at(3), this->setpoints.at(4), this->setpoints.at(5));
+        }
       };
     setpoint_subscription_ =
-      this->create_subscription<std_msgs::msg::String>("setpoint", 10, setpoint_callback);
+      this->create_subscription<std_msgs::msg::Float64MultiArray>("setpoint", 10, setpoint_callback);
     
     // Joint position data retrieval
     auto joint_pos_callback =
-      [this](std_msgs::msg::String::UniquePtr msg) -> void {
-        RCLCPP_INFO(this->get_logger(), "I heard joint_pos info: '%s'", msg->data.c_str());
+      [this](std_msgs::msg::Float64MultiArray::UniquePtr msg) -> void {
+        RCLCPP_INFO(this->get_logger(), "I heard joint_pos info");// %f, %f, %f, %f, %f, %f", msg->data.at(0),msg->data.at(1),msg->data.at(2),msg->data.at(3),msg->data.at(4),msg->data.at(5));
       };
     joint_pos_subscription_ =
-      this->create_subscription<std_msgs::msg::String>("joint_pos", 10, joint_pos_callback);
+      this->create_subscription<std_msgs::msg::Float64MultiArray>("joint_pos", 10, joint_pos_callback);
 
     // Publish joint torque data
-    joint_torque_publisher_ = this->create_publisher<std_msgs::msg::String>("joint_torque", 10);
+    joint_torque_publisher_ = 
+      this->create_publisher<std_msgs::msg::Float64MultiArray>("arm_position_controller/commands", 10);
+
+    // Periodically update the simulator.
     auto timer_callback =
       [this]() -> void {
-        auto message = std_msgs::msg::String();
-        message.data = "Fake joint_torque data from capstone: " + std::to_string(this->controller.get_robot_state().JointTorques.data(0));
-        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+        auto message = std_msgs::msg::Float64MultiArray();
+        // TODO: Calculate actual torques using the capstone library
+        if(!(this->setpoints.empty()))
+          message.data = this->setpoints;
+        //RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
         this->joint_torque_publisher_->publish(message);
+      
       };
     
     // Timer to create test data
@@ -98,11 +109,12 @@ public:
 private:
   // User developed controller
   ExampleUserController controller;
+  std::vector<double> setpoints;
 
   // Topic interaction TODO: Change the message types as appropriate
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr setpoint_subscription_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr joint_pos_subscription_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr joint_torque_publisher_;
+  rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr setpoint_subscription_;
+  rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr joint_pos_subscription_;
+  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_torque_publisher_;
 
   // Timer
   rclcpp::TimerBase::SharedPtr timer_;
