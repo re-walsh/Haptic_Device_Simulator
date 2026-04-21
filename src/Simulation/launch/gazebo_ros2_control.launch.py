@@ -12,7 +12,7 @@ from launch_ros.actions import Node
 
 
 def _launch_setup(context, *args, **kwargs):
-    pkg_share = Path(get_package_share_directory('hapticdevice_URDF'))
+    pkg_share = Path(get_package_share_directory('haptic_sim'))
     gz_sim_launch = Path(get_package_share_directory('ros_gz_sim')) / 'launch' / 'gz_sim.launch.py'
     urdf_template = pkg_share / 'urdf' / 'hapticdevice_URDF.urdf'
     controllers_source = pkg_share / 'config' / 'hapticdevice_controllers.yaml'
@@ -74,7 +74,7 @@ def _launch_setup(context, *args, **kwargs):
     )
 
     controller_bringup = Node(
-        package='hapticdevice_URDF',
+        package='haptic_sim',
         executable='bringup_controllers.py',
         name='hapticdevice_controller_bringup',
         output='screen',
@@ -88,7 +88,7 @@ def _launch_setup(context, *args, **kwargs):
     return [
         LogInfo(
             msg=(
-                f'Launching hapticdevice_URDF in {"headless" if headless else "GUI"} mode '
+                f'Launching haptic_sim in {"headless" if headless else "GUI"} mode '
                 f'with staged assets in {controllers_file.parent} and world {world_path.name}.'
             )
         ),
@@ -110,7 +110,7 @@ def _launch_setup(context, *args, **kwargs):
 
 
 def generate_launch_description():
-    pkg_share = Path(get_package_share_directory('hapticdevice_URDF'))
+    pkg_share = Path(get_package_share_directory('haptic_sim'))
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -123,7 +123,7 @@ def generate_launch_description():
             default_value='arm_world',
             description='Name of the world inside the SDF file.',
         ),
-        DeclareLaunchArgument('robot_name', default_value='hapticdevice_URDF'),
+        DeclareLaunchArgument('robot_name', default_value='haptic_sim'),
         DeclareLaunchArgument('x', default_value='0.0'),
         DeclareLaunchArgument('y', default_value='0.0'),
         DeclareLaunchArgument('z', default_value='0.15'),

@@ -15,19 +15,24 @@ find_package(std_msgs REQUIRED)
 
 # Add Node executables
 # User Controller
-add_executable(user_controller src/User_Controller/user_controller.cpp)
+add_executable(user_controller User_Controller/user_controller.cpp)
 ament_target_dependencies(user_controller rclcpp std_msgs)
 
 # Capstone Controller
-add_executable(capstone_controller src/Capstone_Controller/capstone_controller.cpp)
+add_executable(capstone_controller Capstone_Controller/capstone_controller.cpp)
 ament_target_dependencies(capstone_controller rclcpp std_msgs)
 
+# add HapticDevice library
+set(HW_ENABLE OFF CACHE BOOL "" FORCE)
+add_subdirectory(Capstone_Controller/hapticdevice/Code/HapticDevice/)
+target_link_libraries(capstone_controller HapticDevice)
+
 # Simulator
-add_executable(simulator src/Simulator/simulator.cpp)
+add_executable(simulator Simulator/simulator.cpp)
 ament_target_dependencies(simulator rclcpp std_msgs)
 
 # Visualization
-add_executable(visualization src/Visualization/visualization.cpp)
+add_executable(visualization Visualization/visualization.cpp)
 ament_target_dependencies(visualization rclcpp std_msgs)
 
 install(TARGETS
@@ -37,7 +42,10 @@ install(TARGETS
   visualization
   DESTINATION lib/${PROJECT_NAME})
 
-
+# Install HapticDevice library
+install(TARGETS HapticDevice
+  LIBRARY DESTINATION lib/
+  RUNTIME DESTINATION lib/)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

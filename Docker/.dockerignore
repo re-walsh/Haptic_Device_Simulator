@@ -1,0 +1,15 @@
+# Docker build ignore patterns
+.git
+.gitignore
+.vscode
+.editorconfig
+Documentation/
+CAD/
+Datasheets/
+_Digital Archive/
+*.urdf
+*.md
+.DS_Store
+__pycache__
+*.pyc
+build/

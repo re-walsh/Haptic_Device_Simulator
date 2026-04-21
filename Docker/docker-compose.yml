@@ -1,0 +1,39 @@
+services:
+  haptic_simulator:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+      platforms:
+        - "linux/amd64"  # Explicitly target x86_64 Linux
+    container_name: haptic_simulator 
+    stdin_open: true
+    tty: true
+    
+    volumes:
+      # Mount code directory for live editing and testing
+      - ../haptic_simulator_pkg:/workspace/haptic_simulator_pkg:delegated
+      # Persist vcpkg cache across builds
+      - vcpkg-cache:/vcpkg/installed
+    
+    environment:
+      VCPKG_ROOT: /vcpkg
+      VCPKG_DISABLE_METRICS: "1"
+      CMAKE_BUILD_TYPE: Release
+      # Set CMake preset for Linux x86_64 cross-compilation
+      CMAKE_PRESET: linux-x64-cross
+    
+    working_dir: /workspace/haptic_simulator_pkg
+    
+    # Resource limits for M1 Mac (adjust if needed)
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+        reservations:
+          cpus: '2'
+          memory: 2G
+
+volumes:
+  vcpkg-cache:
+    driver: local

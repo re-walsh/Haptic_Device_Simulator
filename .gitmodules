@@ -1,0 +1,4 @@
+
+[submodule "src/haptic_simulator_pkg/Capstone_Controller/hapticdevice"]
+	path = src/haptic_simulator_pkg/Capstone_Controller/hapticdevice
+	url = https://github.com/humanteleop/hapticdevice.git
