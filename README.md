@@ -18,7 +18,7 @@ Ensure that you have Ubuntu 22.04 installed, either as an operating system, in W
 
 Now, you can begin to set up the Ros2 environment and use the repository.
 #### First time Setup
-1. Install Ros2 Humble: https://docs.ros.org/en/humble/Installation.html 
+1. Install Ros2 Humble: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html
 1. Clone this repository in your Ros2 workspace using HTTPS: `git clone https://github.com/re-walsh/Haptic_Device_Simulator.git`
 1. Load submodules (note this assumes you have access to the capstone repository): `git submodule update --init --recursive`
 1. Install the required packages:
