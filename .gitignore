@@ -3,4 +3,3 @@ install/
 log/
 .vscode/
 **/.DS_Store
-src/haptic_comp/Capstone_Controller/hapticdevice/
