@@ -22,25 +22,20 @@ ament_target_dependencies(node_user_controller rclcpp std_msgs)
 ament_target_dependencies(node_user_controller rclcpp std_msgs Eigen3)
 target_include_directories(node_user_controller PRIVATE include)
 
-# Capstone Controller
-add_executable(node_capstone_controller Capstone_Controller/controller_manager.cpp)
-ament_target_dependencies(node_capstone_controller rclcpp std_msgs)
-target_include_directories(node_capstone_controller PRIVATE include)
-ament_target_dependencies(node_capstone_controller sensor_msgs)
+# Device Controller
+add_executable(node_device_controller Device_Controller/controller_manager.cpp)
+ament_target_dependencies(node_device_controller rclcpp std_msgs)
+target_include_directories(node_device_controller PRIVATE include)
+ament_target_dependencies(node_device_controller sensor_msgs)
 
 # add HapticDevice library
 set(HW_ENABLE OFF CACHE BOOL "" FORCE)  # disable hardware for now until full linux hardware compatibility is available.
-add_subdirectory(Capstone_Controller/hapticdevice/Code/HapticDevice/)
-target_link_libraries(node_capstone_controller HapticDevice)
-
-# Simulator
-add_executable(node_simulation Simulator/simulator.cpp)
-ament_target_dependencies(node_simulation rclcpp std_msgs)
+add_subdirectory(Device_Controller/hapticdevice/Code/HapticDevice/)
+target_link_libraries(node_device_controller HapticDevice)
 
 install(TARGETS
   node_user_controller
-  node_capstone_controller
-  node_simulation
+  node_device_controller
   DESTINATION lib/${PROJECT_NAME})
 
 # Install HapticDevice library
@@ -49,7 +44,7 @@ install(TARGETS HapticDevice
   RUNTIME DESTINATION lib/)
 
 # Copy config folder contents to install directory if it doesn't exist
-install(DIRECTORY Capstone_Controller/hapticdevice/Code/HapticDevice/config/
+install(DIRECTORY Device_Controller/hapticdevice/Code/HapticDevice/config/
 DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
