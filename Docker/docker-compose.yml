@@ -11,7 +11,7 @@ services:
     
     volumes:
       # Mount code directory for live editing and testing
-      - ../haptic_simulator_pkg:/workspace/haptic_simulator_pkg:delegated
+      - ../src:/workspace/src:delegated
       # Persist vcpkg cache across builds
       - vcpkg-cache:/vcpkg/installed
     
@@ -22,7 +22,7 @@ services:
       # Set CMake preset for Linux x86_64 cross-compilation
       CMAKE_PRESET: linux-x64-cross
     
-    working_dir: /workspace/haptic_simulator_pkg
+    working_dir: /workspace/src
     
     # Resource limits for M1 Mac (adjust if needed)
     deploy:

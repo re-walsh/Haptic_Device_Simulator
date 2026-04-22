@@ -39,12 +39,12 @@ public:
     return ErrorCode::Success;
   };
 
-	HapticDevice::JointTauVector get_target_state() override {
-    if(this->get_robot_state().JointTorques.data(0) >= this->limits.config["joints"][0]["torque_max"].as<double>(10.0))
+  HapticDevice::JointTauVector get_target_state() override {
+    if(this->get_robot_state().JointTorques.data(0) >= this->limits_manager .config["joints"][0]["torque_max"].as<double>(10.0))
     {
       direction = -1 * direction;
     }
-    if(this->get_robot_state().JointTorques.data(0) <= this->limits.config["joints"][0]["torque_min"].as<double>(10.0))
+    if(this->get_robot_state().JointTorques.data(0) <= this->limits_manager .config["joints"][0]["torque_min"].as<double>(10.0))
     {
       direction = -1 * direction;
     }

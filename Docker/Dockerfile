@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile for C++ development environment
 # Targets Linux x86 architecture with build tools for the HapticDevice library
 
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 # Prevent interactive prompts during build
 ENV DEBIAN_FRONTEND=noninteractive
@@ -47,6 +47,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     mesa-common-dev \
     libxxf86vm-dev \
     libboost-dev \
+    tree \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -62,22 +63,15 @@ RUN apt-get install -y software-properties-common \
     && add-apt-repository universe
 
 # get the ros 2 apt packages
-RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}') \
+RUN sudo apt update && sudo apt install curl -y \
+    && export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}') \
     && curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb" \
-    && dpkg -i /tmp/ros2-apt-source.deb
+    && sudo dpkg -i /tmp/ros2-apt-source.deb
 
-# install ros 2 jazzy
+# install ros 2
 RUN apt update && apt install -y --no-install-recommends \
     ros-dev-tools \
-    ros-jazzy-desktop
-
-# # Install Quanser SDK
-# RUN wget --no-cache https://repo.quanser.com/debian/release/config/configure_repo.sh \
-#     && chmod u+x configure_repo.sh \
-#     && ./configure_repo.sh \
-#     && rm -f ./configure_repo.sh \
-#     && sudo apt update \
-#     && sudo apt-get install -y quanser-sdk
+    ros-humble-desktop
 
 # Install vcpkg
 RUN git clone https://github.com/Microsoft/vcpkg.git ${VCPKG_ROOT} \
@@ -91,7 +85,7 @@ RUN mkdir -p ${VCPKG_ROOT}/overlays/ports
 WORKDIR /workspace
 
 # Create mount points for source code
-VOLUME ["/workspace/haptic_simulator_pkg"]
+VOLUME ["/workspace/src"]
 
 # Set environment for CMake
 ENV CMAKE_BUILD_TYPE=Release
