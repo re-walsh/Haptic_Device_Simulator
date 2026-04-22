@@ -5,6 +5,9 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
+#include "std_msgs/msg/int32.hpp"
+#include "common.h"
+
 
 using namespace std::chrono_literals;
 
@@ -25,11 +28,16 @@ public:
   UserController()
   : Node("user_controller"), count_(0)
   {
+    controller_type_publisher_ = this->create_publisher<std_msgs::msg::Int32>("controller_type", 10);
     setpoint_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("setpoint", 10);
     auto timer_callback =
       [this]() -> void {
+        // Indicate Controller Type needed
+        auto type_msg = std_msgs::msg::Int32();
+        type_msg.data = ControllerTypes::JointPosition;
+        this->controller_type_publisher_->publish(type_msg);
         // Get joint positon data from the user 
-        float pos1, pos2, pos3, pos4, pos5, pos6;
+        float pos1 = 0.0f, pos2 = 0.0, pos3 = 0.0f, pos4 = 0.0f, pos5 = 0.0f, pos6 = 0.0f;
         std::cout << "Please enter the desired joint position of each joint, seperated by whitespace." << std::endl;
         std::cin >> pos1 >> pos2 >> pos3 >> pos4 >> pos5 >> pos6;
         float data[6] = {pos1, pos2, pos3, pos4, pos5, pos6};
@@ -48,6 +56,8 @@ public:
 
 private:
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr setpoint_publisher_;
+  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr controller_type_publisher_;
+
   // Timer
   rclcpp::TimerBase::SharedPtr timer_;
   size_t count_;
