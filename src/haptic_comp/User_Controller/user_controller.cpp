@@ -47,7 +47,6 @@ public:
   }
 
 private:
-  // Topic Interaction TODO: Change the message types as appropriate
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr setpoint_publisher_;
   // Timer
   rclcpp::TimerBase::SharedPtr timer_;

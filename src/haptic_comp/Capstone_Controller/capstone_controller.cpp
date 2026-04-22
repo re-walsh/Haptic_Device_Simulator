@@ -16,7 +16,6 @@ This is where Edwin + Kyle's capstone functionality can be implemented.
 NOTE: In this implementation, raw joint poisition and joint position are assumed to be the same topic, so
 the capstone controller only subscribes to the topic, and does not publish any joint position data.
 */
-//TODO: Remove this namespace if neccessary
 using namespace std::chrono_literals;
 using namespace HapticDevice;
 
@@ -90,7 +89,7 @@ public:
     auto timer_callback =
       [this]() -> void {
         auto message = std_msgs::msg::Float64MultiArray();
-        // TODO: Calculate actual torques using the capstone library
+        
         if(!(this->setpoints.empty()))
           message.data = this->setpoints;
         //RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
@@ -115,7 +114,6 @@ private:
   // Actual joint positions from the simulator
   std::vector<double> positions;
 
-  // Topic interaction TODO: Change the message types as appropriate
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr setpoint_subscription_;
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr joint_pos_subscription_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_torque_publisher_;
