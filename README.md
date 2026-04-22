@@ -3,7 +3,7 @@ This repository is contains a testing environment built for the teleultrasound h
 
 The repository includes simulation and visualization functionality using Gazebo and Rviz, and is built on a Ros2 framework.
 
-## Technical Requirements
+## Technical Requirements (see _Getting Started_ for instructions)
 - Ubuntu 22.04 "Jammy Jellyfish", Docker, or WSL
 - Ros2 "Humble Hawksbill"
 - Access to a haptic device controller library (this project assumes the user has access to the humanteleop/hapticdevice capstone repository)
