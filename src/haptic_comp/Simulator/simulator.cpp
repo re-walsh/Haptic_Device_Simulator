@@ -9,7 +9,6 @@
 Based on this minimal publisher/subscriber tutorial:
 https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html
 */
-//TODO: Remove this namespace if neccessary
 using namespace std::chrono_literals;
 
 class Simulator : public rclcpp::Node
@@ -42,7 +41,7 @@ public:
   }
 
 private:
-  // Topic Interaction. TODO: Change the message types as appropriate
+
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr joint_torque_subscription_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr joint_pos_publisher_;
   // Timer
