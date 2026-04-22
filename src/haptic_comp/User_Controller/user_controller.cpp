@@ -37,7 +37,7 @@ public:
         type_msg.data = ControllerTypes::JointPosition;
         this->controller_type_publisher_->publish(type_msg);
         // Get joint positon data from the user 
-        float pos1, pos2, pos3, pos4, pos5, pos6;
+        float pos1 = 0.0f, pos2 = 0.0, pos3 = 0.0f, pos4 = 0.0f, pos5 = 0.0f, pos6 = 0.0f;
         std::cout << "Please enter the desired joint position of each joint, seperated by whitespace." << std::endl;
         std::cin >> pos1 >> pos2 >> pos3 >> pos4 >> pos5 >> pos6;
         float data[6] = {pos1, pos2, pos3, pos4, pos5, pos6};
@@ -51,7 +51,7 @@ public:
         this->setpoint_publisher_->publish(message);
       };
     // Timer to periodically ask for input.
-    timer_ = this->create_wall_timer(5000ms, timer_callback);
+    timer_ = this->create_wall_timer(500ms, timer_callback);
   }
 
 private:

@@ -44,4 +44,8 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+# Copy config folder contents to install directory if it doesn't exist
+install(DIRECTORY ../haptic_comp/Capstone_Controller/hapticdevice/Code/HapticDevice/config/
+DESTINATION lib/${PROJECT_NAME})
+
 ament_package()

@@ -71,7 +71,12 @@ RUN sudo apt update && sudo apt install curl -y \
 # install ros 2
 RUN apt update && apt install -y --no-install-recommends \
     ros-dev-tools \
-    ros-humble-desktop
+    ros-humble-desktop \
+    ros-humble-ros-gz-sim \ 
+    ros-humble-ros2-control \ 
+    ros-humble-ros2-controllers \ 
+    ros-humble-gz-ros2-control \
+    ros-humble-joint-state-publisher-gui
 
 # Install vcpkg
 RUN git clone https://github.com/Microsoft/vcpkg.git ${VCPKG_ROOT} \

@@ -28,15 +28,17 @@ public:
             std::stringstream ss;
             std::lock_guard<std::mutex> lock(controller_mutex);
             if(this->active_controller && this->active_controller->is_running()){
-                ss << "Controller Running - Joint Torques: " << this->active_controller->get_robot_state().JointTorques.data.transpose();
-                ss << ";\tJoint Positions: " << this->active_controller->get_robot_state().JointPositions.data.transpose();
-                ss << ";\tController Type: " << this->controller_type;
+                ss << "Controller Running - Joint Torques: "  << std::fixed << std::setprecision(2) << std::setw(3) << this->active_controller->get_robot_state().JointTorques.data.transpose();
+                ss << ";\tJoint Positions: " << std::fixed << std::setprecision(3) << std::setw(5) << this->active_controller->get_robot_state().JointPositions.data.transpose();
+                ss << ";\tCtrl Type: " << this->controller_type;
                 std::string str = ss.str();
                 RCLCPP_INFO(this->get_logger(), str.c_str());
             }
         };
         // Timer to create test data
-        timer_ = this->create_wall_timer(500ms, timer_callback);
+        timer_ = this->create_wall_timer(50ms, timer_callback);
+
+        RCLCPP_INFO(this->get_logger(), "Controller Manager Ready. Waiting for controller type selection.");
     }
 
     void initialize(){

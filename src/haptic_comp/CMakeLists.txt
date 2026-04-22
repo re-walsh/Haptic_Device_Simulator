@@ -12,6 +12,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 # Add Node executables
@@ -25,6 +26,7 @@ target_include_directories(node_user_controller PRIVATE include)
 add_executable(node_capstone_controller Capstone_Controller/controller_manager.cpp)
 ament_target_dependencies(node_capstone_controller rclcpp std_msgs)
 target_include_directories(node_capstone_controller PRIVATE include)
+ament_target_dependencies(node_capstone_controller sensor_msgs)
 
 # add HapticDevice library
 set(HW_ENABLE OFF CACHE BOOL "" FORCE)  # disable hardware for now until full linux hardware compatibility is available.
@@ -45,6 +47,10 @@ install(TARGETS
 install(TARGETS HapticDevice
   LIBRARY DESTINATION lib/
   RUNTIME DESTINATION lib/)
+
+# Copy config folder contents to install directory if it doesn't exist
+install(DIRECTORY Capstone_Controller/hapticdevice/Code/HapticDevice/config/
+DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
