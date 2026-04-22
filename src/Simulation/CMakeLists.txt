@@ -3,8 +3,28 @@ cmake_minimum_required(VERSION 3.8)
 project(haptic_sim)
 
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
-install(DIRECTORY config launch meshes urdf
+add_executable(simulator src/simulator.cpp)
+ament_target_dependencies(simulator
+  rclcpp
+  std_msgs
+  sensor_msgs
+)
+
+install(TARGETS
+  simulator
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  config
+  launch
+  meshes
+  scripts
+  urdf
   visualization
   DESTINATION share/${PROJECT_NAME}
 )
@@ -14,7 +34,7 @@ set(PACKAGE_DATA_FILES
 )
 
 install(FILES ${PACKAGE_DATA_FILES}
-	DESTINATION share/${PROJECT_NAME}
+  DESTINATION share/${PROJECT_NAME}
 )
 
 install(PROGRAMS
