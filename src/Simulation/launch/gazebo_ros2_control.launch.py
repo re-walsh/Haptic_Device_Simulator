@@ -29,7 +29,7 @@ def _launch_setup(context, *args, **kwargs):
     shutil.copytree(mesh_source_dir, mesh_dir, dirs_exist_ok=True)
 
     robot_description = robot_description.replace('__HAPTICDEVICE_CONTROLLERS_FILE__', controllers_file.as_posix())
-    robot_description = robot_description.replace('package://hapticdevice_URDF/meshes', mesh_dir.as_posix())
+    robot_description = robot_description.replace('package://haptic_sim/meshes', mesh_dir.as_posix())
 
     with tempfile.NamedTemporaryFile(mode='w', suffix='.urdf', delete=False, encoding='utf-8') as tmp:
         tmp.write(robot_description)

@@ -14,7 +14,7 @@ from launch.conditions import IfCondition
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    pkg_share = Path(get_package_share_directory('hapticdevice_URDF'))
+    pkg_share = Path(get_package_share_directory('haptic_sim'))
     
     rviz_config = pkg_share / 'Visualization' / 'view_haptic.rviz'
     urdf_template = pkg_share / 'urdf' / 'hapticdevice_URDF.urdf'

@@ -27,7 +27,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/base_link.STL" />
+          filename="package://haptic_sim/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -41,7 +41,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/base_link.STL" />
+          filename="package://haptic_sim/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -67,7 +67,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link1.STL" />
+          filename="package://haptic_sim/meshes/link1.STL" />
       </geometry>
       <material
         name="">
@@ -81,7 +81,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link1.STL" />
+          filename="package://haptic_sim/meshes/link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -134,7 +134,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link2.STL" />
+          filename="package://haptic_sim/meshes/link2.STL" />
       </geometry>
       <material
         name="">
@@ -148,7 +148,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link2.STL" />
+          filename="package://haptic_sim/meshes/link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -190,7 +190,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link3.STL" />
+          filename="package://haptic_sim/meshes/link3.STL" />
       </geometry>
       <material
         name="">
@@ -204,7 +204,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link3.STL" />
+          filename="package://haptic_sim/meshes/link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -248,7 +248,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link4.STL" />
+          filename="package://haptic_sim/meshes/link4.STL" />
       </geometry>
       <material
         name="">
@@ -262,7 +262,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link4.STL" />
+          filename="package://haptic_sim/meshes/link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -304,7 +304,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link5.STL" />
+          filename="package://haptic_sim/meshes/link5.STL" />
       </geometry>
       <material
         name="">
@@ -318,7 +318,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link5.STL" />
+          filename="package://haptic_sim/meshes/link5.STL" />
       </geometry>
     </collision>
   </link>
@@ -360,7 +360,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link6.STL" />
+          filename="package://haptic_sim/meshes/link6.STL" />
       </geometry>
       <material
         name="">
@@ -374,7 +374,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link6.STL" />
+          filename="package://haptic_sim/meshes/link6.STL" />
       </geometry>
     </collision>
   </link>
@@ -416,7 +416,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link3b.STL" />
+          filename="package://haptic_sim/meshes/link3b.STL" />
       </geometry>
       <material
         name="">
@@ -430,7 +430,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://hapticdevice_URDF/meshes/link3b.STL" />
+          filename="package://haptic_sim/meshes/link3b.STL" />
       </geometry>
     </collision>
   </link>
