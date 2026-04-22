@@ -36,8 +36,8 @@ Now, you can begin to set up the Ros2 environment and use the repository.
 1. Build: In root directory run `colcon build`
 1. Load ROS package (in each terminal, for each new build): `source install/setup.bash`
 1. Copy configuration files from HapticDevice/config to the executable directory: `cp -r haptic_comp/src/Capstone_Controller/hapticdevice/Code/HapticDevice/config/* install/haptic_comp/lib/haptic_comp/`
-1. Run the user controller: `ros2 run haptic_comp user_controller`
-1. (In a seperate terminal - don't forget to source!) Run the capstone controller: `ros2 run haptic_comp capstone_controller`
+1. Run the user controller: `ros2 run haptic_comp node_user_controller`
+1. (In a seperate terminal - don't forget to source!) Run the capstone controller: `ros2 run haptic_comp node_capstone_controller`
 1. (In another seperate terminal) Run the simulator: `ros2 launch haptic_sim gazebo_ros2_control.launch.py`
 1. (In one final terminal) Run the visualizer: `ros2 launch haptic_sim vis_launch.py manual:=false`
 
