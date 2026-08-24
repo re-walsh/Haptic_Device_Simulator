@@ -1,5 +1,5 @@
 # Haptic Device Simulator
-This repository is contains a testing environment built for the teleultrasound haptic device being developed as a capstone project for the mechanical engineering department at UBC.
+This repository contains a testing environment built for the teleultrasound haptic device being developed as a capstone project for the mechanical engineering department at UBC.
 
 The repository includes simulation and visualization functionality using Gazebo and Rviz, and is built on a Ros2 framework.
 
